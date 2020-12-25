@@ -73,10 +73,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
         try (Connection connection = util.getConnect();
-             Statement statement = connection.createStatement()) {
-            String sql = "SELECT * FROM users";
-            ResultSet result = statement.executeQuery(sql);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(sql)) {
+
             while (result.next()) {
                 long id = result.getLong(1);
                 String name = result.getString(2);
@@ -88,7 +90,6 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setLastName(lastname);
                 user.setAge(age);
                 users.add(user);
-                result.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
